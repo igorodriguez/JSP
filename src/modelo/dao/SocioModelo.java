@@ -5,8 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import modelo.Conector;
+import modelo.bean.Libro;
 import modelo.bean.Socio;
 
 public class SocioModelo extends Conector{
@@ -86,6 +88,20 @@ public class SocioModelo extends Conector{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return socios;
+		
+	}
+	
+	public ArrayList<Socio> selectAllConPrestamos(){
+		ArrayList<Socio> socios = this.selectAll();
+		PrestamoModelo prestamoModelo = new PrestamoModelo();
+		
+		Iterator<Socio> i = socios.iterator();
+		while(i.hasNext()) {
+			Socio socio = i.next();
+			socio.setPrestamos(prestamoModelo.selecConPrestamos(socio.getId()));
+		}
+		
 		return socios;
 		
 	}
